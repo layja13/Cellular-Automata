@@ -88,6 +88,7 @@ ca = ElementaryCellularAutomaton(initial_conditions=[0,1,0], rule=110)
 #print(ca.rule_binary)
 #print(ca.rules)
 
+
 ca.evolution(steps_target=20)
 
 # Next steps 
