@@ -1,5 +1,7 @@
 # Elementary Cellular Automatas
-# Grid? lol
+
+# Please corrige the code to use numpy array of zeros in the next state, then just update to either 0 or one, please check it, this will make the code, cleaner, millions of times easier
+#to understand, and more efficient, and simpler
 
 from itertools import product
 import numpy as np
@@ -145,7 +147,5 @@ Philosophical questions
 preguntarte porqué tiene que tomar en cuenta las white celdas de los costados
 """
 
-class TwoDCellularAutomaton:
-    def __init__(self):
-        pass
+
     
