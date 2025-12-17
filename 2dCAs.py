@@ -1,21 +1,22 @@
-import pygame
+#import pygame
 import numpy as np
 #from itertools import product
 
 class TwoDCellularAutomaton:
-    def __init__(self, grid_dim, initial_conditions=[], rule='game_of_life', WIDTH=None, HEIGHT=None, TILE_SIZE=None, FPS=None):
+    def __init__(self, grid_dim, initial_conditions=[], steps=10, rule='game_of_life', WIDTH=None, HEIGHT=None, TILE_SIZE=None, FPS=None):
         self.grid_dim = grid_dim
         self.initial_conditions = initial_conditions
         self.rule = rule
+        self.steps = steps
         #self.visualization = visualization
         self.grid = self.init_grid()
 
+        # Pygame setting initialisation
         self.WIDTH = 600 if WIDTH == None else WIDTH 
         self.HEIGHT = 600 if HEIGHT == None else HEIGHT
         self.TILE_SIZE =  20 if TILE_SIZE == None else TILE_SIZE
         self.FPS = 60 if FPS == None else FPS
         
-
 
     def init_grid(self):
         grid = np.zeros((self.grid_dim, self.grid_dim), dtype=np.uint8)
@@ -36,12 +37,13 @@ class TwoDCellularAutomaton:
                 else the cell keeps the same (based on the webpage I saw, lol)
             """
             neighborSum = 0
+            #print(f"neighborSum: {neighborSum}")
+            #print(f"self.grid[i][j]: {self.grid[i][j]}")
 
             for rowNeighbors in range(-1, 2):
                 for columnNeighbors in range(-1, 2):
                     neighborSum += self.grid[rowNeighbors][columnNeighbors]
             
-
             neighborSum -= self.grid[i][j]
 
             if self.grid[i][j] == 1 and neighborSum < 2: return 0
@@ -54,23 +56,27 @@ class TwoDCellularAutomaton:
 
 
     def evolution(self):
-        next_state = np.zeros((self.grid_dim, self.grid_dim), dtype=np.int8)
+        while self.steps > 0:
+            next_state = np.zeros((self.grid_dim, self.grid_dim), dtype=np.int8)
 
-        """
-        Im going to avoid applying the rule on edges (to save computational cost, 
-        you know, the program will crash on -1 and n=grid_dim-1, so a "def check" function is needed)
-        obviously, not the complete implementation, considering how I am, lol
-        change it in the future to consider edges as well
-        """
-        # Applying the rule to each cell in the current state 
-        for row in range(1, self.grid_dim-1): # Avoiding edges
-            for column in range(1, self.grid_dim-1): # Avoiding edges as well
-                next_state[row][column] = self.apply_rule(row, column)
-        
-        print(f"next state: {next_state}")
-        
+            """
+            Im going to avoid applying the rule on edges (to save computational cost, 
+            you know, the program will crash on -1 and n=grid_dim-1, so a "def check" function is needed)
+            obviously, not the complete implementation, considering how I am, lol
+            change it in the future to consider edges as well
+            """
+            # Applying the rule to each cell in the current state 
+            for row in range(1, self.grid_dim-1): # Avoiding edges
+                for column in range(1, self.grid_dim-1): # Avoiding edges as well
+                    next_state[row][column] = self.apply_rule(row, column)
+            
+            print(f"next state: {next_state}")
+
+            self.steps -= 1
+            
         return next_state
-    
+
+            
 
     def visualization(self):
         """
@@ -78,7 +84,6 @@ class TwoDCellularAutomaton:
         """
         pass
 
-        
 
     """
     This is only if you want to choose the initial conditions manually, I will try to set it up visually using pygame
@@ -92,8 +97,6 @@ class TwoDCellularAutomaton:
 
 
 # initial conditions are tuples indicating the coordenates where the cells are black
-gameOfLife = TwoDCellularAutomaton(grid_dim=100, initial_conditions=[(50, 50)], rule="game_of_life")
+#gameOfLife = TwoDCellularAutomaton(grid_dim=100, initial_conditions=[(50, 50)], rule="game_of_life")
 
-gameOfLife.evolution()
-
-
+#gameOfLife.evolution()
